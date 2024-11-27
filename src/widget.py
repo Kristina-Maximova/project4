@@ -1,13 +1,13 @@
 import re
-from src.masks import get_mask_card_number, get_mask_account
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(card_or_account: str) -> str:
     """Функция для маскировки номеров карт и счетов"""
     pattern = r"\d{16,20}"
     match = re.search(pattern, card_or_account)
-    number_start_index = match.start()
-    card_or_account_number = card_or_account[match.start():]
+    number_start_index = match.start()  # type: ignore
+    card_or_account_number = card_or_account[number_start_index:]
 
     if len(card_or_account_number) == 20:
         mask_account = get_mask_account(card_or_account_number)
@@ -21,9 +21,11 @@ def mask_account_card(card_or_account: str) -> str:
 
 def get_date(line_with_date: str) -> str:
     """Функция, возвращающая из строки дату в формате (ДД.ММ.ГГГГ)"""
+
     if line_with_date:
         return line_with_date[8:10] + "." + line_with_date[5:7] + "." + line_with_date[:4]
-
+    else:
+        return ""
 
 
 if __name__ == "__main__":

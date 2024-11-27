@@ -7,14 +7,14 @@ def get_mask_card_number(card_number: str) -> str:
     """
 
     return (
-            card_number[0:4]
-            + " "
-            + card_number[4:6]
-            + re.sub(r"\d", r"*", card_number[6:8])
-            + " "
-            + re.sub(r"\d", r"*", card_number[8:12])
-            + " "
-            + card_number[-4:]
+        card_number[0:4]
+        + " "
+        + card_number[4:6]
+        + re.sub(r"\d", r"*", card_number[6:8])
+        + " "
+        + re.sub(r"\d", r"*", card_number[8:12])
+        + " "
+        + card_number[-4:]
     )
 
 

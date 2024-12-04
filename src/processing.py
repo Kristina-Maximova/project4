@@ -3,7 +3,7 @@ from typing import List
 from src.widget import get_date
 
 
-def filter_by_state(list_of_dict: List[dict], state: str ="EXECUTED") -> list[dict]:
+def filter_by_state(list_of_dict: List[dict], state: str = "EXECUTED") -> list[dict]:
     """Функция для фильтрации списка словарей по ключу state,
     значение ключа по-умолчанию 'EXECUTED'"""
     new_list_of_dict = []
@@ -14,7 +14,7 @@ def filter_by_state(list_of_dict: List[dict], state: str ="EXECUTED") -> list[di
     return new_list_of_dict
 
 
-def sort_by_date(list_of_dict: List[dict], reverse: bool =True) -> List[dict]:
+def sort_by_date(list_of_dict: List[dict], reverse: bool = True) -> List[dict]:
     """Функция для сортировки списка словарей по дате"""
     list_of_date = sorted(
         list_of_dict, key=lambda x: list(map(int, get_date(x["date"]).split(".")))[::-1], reverse=reverse

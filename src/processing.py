@@ -14,12 +14,8 @@ def filter_by_state(list_of_dict: List[dict], state="EXECUTED") -> list[dict]:
 
 
 def sort_by_date(list_of_dict: List[dict], reverse=True) ->List[dict]:
-    list_of_date = []
-    for item in list_of_dict:
-        if "date" in item:
-            date = get_date(item["date"])
-            list_of_date.append(date)
-
+    """Функция для сортировки списка словарей по дате"""
+    list_of_date = sorted(list_of_dict, key=lambda i: list(map(int, get_date(i["date"]).split('.')))[::-1], reverse=reverse)
     return list_of_date
 
 

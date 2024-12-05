@@ -12,7 +12,7 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
     return new_list_of_dict
 
 
-def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict]
+def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict]:
     list_of_date = sorted(
         list_of_dict, key=lambda x: list(map(int, get_date(x["date"]).split(".")))[::-1], reverse=reverse
     )

@@ -9,7 +9,7 @@ def mask_account_card(card_or_account: str) -> str:
 
         pattern = r"\d{16,20}"
         match = re.search(pattern, card_or_account)
-        if match == None:
+        if match is None:
             raise ValueError("Неверный ввод данных")
         else:
             number_start_index = match.start()  # No error!
@@ -29,10 +29,10 @@ def get_date(line_with_date: str) -> str:
 
     if line_with_date:
         date_pattern = r"^\d{4}-\d{2}-\d{2}"
-        if re.search(date_pattern, line_with_date) == None:
+        if re.search(date_pattern, line_with_date) is None:
             raise ValueError("Неверный ввод данных")
 
-        else: return line_with_date[8:10] + "." + line_with_date[5:7] + "." + line_with_date[:4]
+        return line_with_date[8:10] + "." + line_with_date[5:7] + "." + line_with_date[:4]
     else:
         return ""
 

@@ -23,11 +23,13 @@ def test_mask_account_card_invalid_input() -> None:
         assert str(exc_info.value) == "Неверный ввод данных"
 
 
-def test_get_date(correct_string_with_date) -> None:
-   assert get_date(correct_string_with_date) == "11.12.2024"
+def test_get_date(correct_string_with_date: str) -> None:
+    assert get_date(correct_string_with_date) == "11.12.2024"
+
 
 def test_get_date_for_empty() -> None:
     assert get_date("") == ""
+
 
 def test_get_date_invalid_input() -> None:
     with pytest.raises(ValueError) as exc_info:
@@ -35,5 +37,3 @@ def test_get_date_invalid_input() -> None:
         get_date("2024.03.118.67140724-03-11")
         get_date("Строка без чисел")
         assert str(exc_info.value) == "Неверный ввод данных"
-
-

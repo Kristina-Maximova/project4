@@ -20,6 +20,7 @@ def account_number_1() -> str:
 def account_mask_1() -> str:
     return "**8765"
 
+
 @pytest.fixture
 def correct_string_with_date() -> str:
     return "2024-12-11T02:26:18.671407"

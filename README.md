@@ -14,9 +14,9 @@
 тут информация будет позже
 
 ## *Тестирование*
-![Отчет о покрытии кода тестами](images\coverage1.jpg)
+![Отчет о покрытии кода тестами:](https://github.com/Kristina-Maximova/project4/blob/feature/homework_10_2/images/coverage1.jpg)
 
-тут информация будет позже
+
 
 ## *Лицензия*
 

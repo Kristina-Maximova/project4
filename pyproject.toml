@@ -30,8 +30,16 @@ line_length = 119
 exclude = '''
 (
   /(
-      \.git
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | dist
   )/
+  | foo.py
+
 )
 '''
 

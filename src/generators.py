@@ -1,3 +1,10 @@
+
+
+def filter_by_currency(transactions: list[dict], currency: "str"):
+    filtered_transactions = filter(lambda x: x["operationAmount"]["currency"]["name"] == currency, transactions)
+    return filtered_transactions
+
+
 transactions = (
     [
         {
@@ -79,13 +86,17 @@ transactions = (
 )
 
 
-def filter_by_currency(transactions: list[dict], currency: "str"):
-    filtered_transactions = filter(lambda x: x["operationAmount"]["currency"]["name"] == currency, transactions)
-    return filtered_transactions
-
 
 def transaction_descriptions(transactions):
-    return (x["description"] for x in transactions)
+   # return (x["description"] for x in transactions)
+    n = 0
+    while True:
+        if "description" in transactions[n]:
+            x = transactions[n].get("description")
+            yield x
+        n += 1
+
+
 
 
 def get_card_sample(nums: str):

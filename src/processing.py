@@ -13,6 +13,7 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
 
 
 def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict]:
+    """Сортирует список словарей по дате"""
     if not list_of_dict:
         return []
     else:

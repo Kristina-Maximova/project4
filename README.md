@@ -13,14 +13,20 @@
 
 >for card_number in card_number_generator(1, 5):
     print(card_number)
+>>0000 0000 0000 0001
 > 
-Вывод: 
+>>0000 0000 0000 0002
+ 
 
-    0000 0000 0000 0001
-    0000 0000 0000 0002
-    0000 0000 0000 0003
-    0000 0000 0000 0004
-    0000 0000 0000 0005
+> @log()
+> 
+> division(6,0)
+> 
+>>Function division started 2024-12-25 at 1735118646.14
+> 
+>>division error: division by zero. Inputs: (6, 0), {}
+>
+>>division running time: 0.0
 
 ## *Тестирование*
 

@@ -3,6 +3,7 @@ from datetime import date
 from functools import wraps
 from time import time
 
+
 # import logging
 
 
@@ -27,9 +28,9 @@ def log(filename: str = "") -> [callable(callable(any))]:
             finally:
                 end_time = time()
                 if end_time > start_time:
-                    running_time = round((end_time - start_time),2)
+                    running_time = round((end_time - start_time), 2)
                 else:
-                    running_time = 0.0 # надо  разобраться, как округлять, а то вылезает то +, то - число
+                    running_time = 0.0  # надо  разобраться, как округлять, а то вылезает то +, то - число
                 end_info = f"{func.__name__} running time: {running_time}\n"
 
                 if filename:
@@ -57,7 +58,6 @@ def division(a, b):
     return a / b
 
 
-# if __name__ == "__main__":
-#
-#     x = division(6, 0)
-#     print(x)
+if __name__ == "__main__":
+    x = division(6, 0)
+    print(x)

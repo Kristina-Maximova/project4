@@ -1,6 +1,3 @@
-import os.path
-import pytest
-
 from src.decorators import log, division
 import re
 
@@ -11,10 +8,10 @@ def test_log_decorators(capsys):
     captured = capsys.readouterr()
 
     assert (re.sub(r"\d", r"*",
-                   str(captured.out)) == f"Function division started ****-**-** at **********.**\n" +
-            "division ok\n" +
-            f"division running time: *.*\n" +
-            "\n")
+                   str(captured.out)) == "Function division started ****-**-** at **********.**\n"
+            + "division ok\n"
+            + "division running time: *.*\n"
+            + "\n")
 
 
 def test_log_with_errors(capsys):
@@ -32,7 +29,7 @@ def test_log_file_entry():
     def hello():
         return "Hello!"
 
-    line = hello()
+    hello()
 
     with open(r"..\logs\log1.txt", "r", encoding="utf-8") as file:
         content = file.readlines()
@@ -46,7 +43,7 @@ def test_log_file_entry_with_error():
     def division2(a, b):
         return a / b
 
-    result = division2(6, 0)
+    division2(6, 0)
     with open(r"..\logs\log2.txt", "r", encoding="utf-8") as file:
         content = file.readlines()
         assert content[-5] == "division2 error: division by zero. Inputs: (6, 0), {}\n"

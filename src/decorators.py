@@ -1,8 +1,7 @@
 import os
+from datetime import date
 from functools import wraps
 from time import time
-from datetime import date
-
 
 # import logging
 
@@ -14,7 +13,7 @@ def log(filename: str = "") -> [callable(callable(any))]:
         @wraps(func)
         def wrapper(*args, **kwargs):
             date_ = date.today()
-            start_time = time()
+            start_time = time().__round__(2)
             start_info = f"Function {func.__name__} started {date_} at {start_time}"
 
             try:
@@ -24,24 +23,23 @@ def log(filename: str = "") -> [callable(callable(any))]:
             except Exception as exc:
                 info = f"{func.__name__} error: {exc}. Inputs: {args}, {kwargs}\n"
                 result = None
-            # else:
-            # info = f"{func.__name__} ok"
-            # return result
 
             finally:
                 end_time = time()
-                running_time = end_time - start_time  # надо  разобраться, как округлять
-
+                if end_time > start_time:
+                    running_time = round((end_time - start_time),2)
+                else:
+                    running_time = 0.0 # надо  разобраться, как округлять, а то вылезает то +, то - число
                 end_info = f"{func.__name__} running time: {running_time}\n"
 
                 if filename:
-                    os.makedirs("logs", exist_ok=True)
-                    filepath = os.path.join("logs", f"{filename}.txt")
+                    os.makedirs("..\\logs", exist_ok=True)
+                    filepath = os.path.join("..\\logs", f"{filename}.txt")
 
                     with open(filepath, "a", encoding="utf-8") as file:
-                        file.write(start_info)
+                        file.write(f"{start_info}\n")
                         file.write(f"{info}\n")
-                        file.write(end_info)
+                        file.write(f"{end_info}\n\n")
 
                 else:
                     print(start_info)
@@ -59,5 +57,7 @@ def division(a, b):
     return a / b
 
 
-x = division(8, 4)
-print(x)
+# if __name__ == "__main__":
+#
+#     x = division(6, 0)
+#     print(x)

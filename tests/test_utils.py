@@ -4,15 +4,15 @@ from src.utils import get_transactions
 import os.path
 
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
+path_for_test = os.path.join(os.path.dirname(__file__), "..", "tests", "test_utils.py")
 
-
-@patch('json.load')
+@patch("json.load")
 def test_get_transactions_with_success(mock_transactions):
     """Тест на корректную работу"""
     mock_transactions.return_value = [{"test": "1"}, {"test": "2"}]
     test_transactions = get_transactions(path_to_file)
     assert test_transactions == [{"test": "1"}, {"test": "2"}]
-    mock_transactions.assert_called
+    mock_transactions.assert_called()
 
 
 def test_get_transactions_with_invalid_path(capsys):
@@ -25,7 +25,7 @@ def test_get_transactions_with_invalid_path(capsys):
 
 def test_get_transactions_with_invalid_data(capsys):
     """Тест при неуспешном декодировании файла"""
-    test_transactions1 = get_transactions("test_utils.py")
+    test_transactions1 = get_transactions(path_for_test)
     captured = capsys.readouterr()
     assert test_transactions1 == []
     assert (captured.out) == "Ошибка декодирования файла\n"

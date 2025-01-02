@@ -11,7 +11,7 @@ url = "https://api.apilayer.com/exchangerates_data/convert"
 
 def get_converted_amount(transaction: dict) -> float:
     """Функция, возвращающая сумму транзакции в рублях."""
-    amount = transaction["operationAmount"]["amount"]
+    amount = transaction["operationAmount"]["amount"]  # строка с суммой транзакции
     code_of_currency = transaction["operationAmount"]["currency"]["code"]
 
     if code_of_currency != "RUB":
@@ -29,7 +29,7 @@ def get_converted_amount(transaction: dict) -> float:
 
             status_code = response.status_code
             if status_code == 200:
-                data = response.json()  # ответ от сервера,
+                data = response.json()  # ответ от сервера
                 return round(data["result"], 2)
 
         except requests.exceptions.RequestException:
@@ -37,7 +37,7 @@ def get_converted_amount(transaction: dict) -> float:
             return 0
 
     elif code_of_currency == "RUB":
-        return float(amount, 2)
+        return round(float(amount), 2)
 
     else:
         return 0.0

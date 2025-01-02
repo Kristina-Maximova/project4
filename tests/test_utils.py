@@ -1,10 +1,12 @@
 import json
-from unittest.mock import Mock, patch
-from src.utils import get_transactions
 import os.path
+from unittest.mock import Mock, patch
+
+from src.utils import get_transactions
 
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
 path_for_test = os.path.join(os.path.dirname(__file__), "..", "tests", "test_utils.py")
+
 
 @patch("json.load")
 def test_get_transactions_with_success(mock_transactions):

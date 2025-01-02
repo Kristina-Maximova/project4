@@ -1,5 +1,6 @@
 import pytest
-from src.generators import filter_by_currency, transaction_descriptions, get_card_sample, card_number_generator
+
+from src.generators import card_number_generator, filter_by_currency, get_card_sample, transaction_descriptions
 
 
 def test_filter_by_currency(transactions):

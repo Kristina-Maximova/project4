@@ -1,5 +1,5 @@
-import os.path
 import json
+import os.path
 
 # Создаем абсолютный путь к файлу
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")

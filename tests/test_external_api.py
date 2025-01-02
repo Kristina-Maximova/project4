@@ -1,6 +1,6 @@
 from unittest.mock import patch
+
 from src.external_api import get_converted_amount
-import requests
 
 API_KEY = "test"
 

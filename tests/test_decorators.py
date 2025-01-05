@@ -1,5 +1,6 @@
-from src.decorators import log, division
 import re
+
+from src.decorators import division, log
 
 
 def test_log_decorators(capsys):

@@ -1,0 +1,28 @@
+Function division started 2024-12-24 at 1735070091.3948727division ok
+division running time: 4.57763671875e-05
+Function division started 2024-12-24 at 1735070492.711098
+division ok
+division running time: 5.030632019042969e-05
+
+
+Function division started 2024-12-24 at 1735070525.2243752
+division ok
+division running time: 4.649162292480469e-05
+
+
+Function division started 2024-12-24 at 1735070660.5334272
+division ok
+division running time: 3.3855438232421875e-05
+
+
+Function division started 2024-12-24 at 1735070949.5681233
+division ok
+division running time: 4.029273986816406e-05
+
+
+Function division started 2024-12-24 at 1735070985.6312323
+division error: division by zero. Inputs: (8, 0), {}
+
+division running time: 5.817413330078125e-05
+
+

@@ -1,4 +1,7 @@
-def filter_by_currency(transactions: list[dict], currency: "str"):
+from typing import Iterator
+
+
+def filter_by_currency(transactions: list[dict], currency: "str") -> Iterator:
     """Генераторная функция,  поочередно выдает транзакции,
     где валюта операции соответствует заданной"""
 
@@ -16,7 +19,7 @@ def filter_by_currency(transactions: list[dict], currency: "str"):
         return iter([])
 
 
-def transaction_descriptions(transactions: list[dict]):
+def transaction_descriptions(transactions: list[dict]) -> Iterator|str:
     """Генераторная функция, поочередно возвращает описание каждой операции"""
     # return (x["description"] for x in transactions)
     if transactions:
@@ -29,12 +32,12 @@ def transaction_descriptions(transactions: list[dict]):
     return iter([])
 
 
-def get_card_sample(nums: str):
+def get_card_sample(nums: str) -> str:
     """Вспомогательная функция, приводящая строку из 16 символов к шаблону '**** **** **** ****'"""
     return f"{nums[0:4]} {nums[4:8]} {nums[8:12]} {nums[12:]}"
 
 
-def card_number_generator(start: int | str, stop: int | str):
+def card_number_generator(start: int | str, stop: int | str) -> Iterator:
     """"""
     if int(stop) >= 10000000000000000 or not isinstance(int(start), int) or not isinstance(int(stop), int) or int(
             start) > int(stop):
@@ -43,9 +46,39 @@ def card_number_generator(start: int | str, stop: int | str):
     return x
 
 # if __name__ == "__main__":
-#
+#     transactions =[
+#             {
+#                 "id": 939719570,
+#                 "state": "EXECUTED",
+#                 "date": "2018-06-30T02:08:58.425572",
+#                 "operationAmount": {
+#                     "amount": "9824.07",
+#                     "currency": {
+#                         "name": "USD",
+#                         "code": "USD"
+#                     }
+#                 },
+#                 "description": "Перевод организации",
+#                 "from": "Счет 75106830613657916952",
+#                 "to": "Счет 11776614605963066702"
+#             },
+#             {
+#                 "id": 142264268,
+#                 "state": "EXECUTED",
+#                 "date": "2019-04-04T23:20:05.206878",
+#                 "operationAmount": {
+#                     "amount": "79114.93",
+#                     "currency": {
+#                         "name": "USD",
+#                         "code": "USD"
+#                     }
+#                 },
+#                 "description": "Перевод со счета на счет",
+#                 "from": "Счет 19708645243227258542",
+#                 "to": "Счет 75651667383060284188"
+#             }]
 #     descriptions = transaction_descriptions(transactions)
-#     for _ in range(5):
+#     for _ in range(2):
 #         print(next(descriptions))
 #
 #     usd_transactions = filter_by_currency(transactions, "USD")

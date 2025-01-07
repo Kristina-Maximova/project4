@@ -2,11 +2,13 @@ import os
 from datetime import date
 from functools import wraps
 from time import time
+from typing import Callable
+
 
 # import logging
 
 
-def log(filename: str = "") -> [callable(callable(any))]:
+def log(filename: str = "") -> Callable:
     """ Декоратор для вывода данных о работе функции."""
 
     def my_decorator(func):
@@ -53,7 +55,7 @@ def log(filename: str = "") -> [callable(callable(any))]:
 
 
 @log()
-def division(a, b):
+def division(a: float, b: float) -> float:
     return a / b
 
 

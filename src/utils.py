@@ -1,11 +1,12 @@
 import json
 import os.path
+from typing import Any
 
 # Создаем абсолютный путь к файлу
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
 
 
-def get_transactions(path: str) -> list[dict]:
+def get_transactions(path: str) -> list[Any]:
     """Функция для чтения данных о транзакциях из json-файла"""
     try:
         with open(path, encoding="utf-8") as transactions_file:

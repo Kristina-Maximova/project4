@@ -7,7 +7,7 @@ from src.loggers import utils_logger
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
 
 
-def get_transactions(path: str) -> list[Any]:
+def get_transactions(path: str) -> list | Any:
     """Функция для чтения данных о транзакциях из json-файла"""
     utils_logger.info(f"Чтение файла {path}")
     try:

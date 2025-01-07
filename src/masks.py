@@ -10,8 +10,7 @@ def get_mask_card_number(card_number: str) -> str:
     masks_logger.info(f"Маскируется номер карты: {card_number}")
     if card_number:
         if len(card_number) == 16:
-            return (
-                    card_number[0:4]
+            return (card_number[0:4]
                     + " "
                     + card_number[4:6]
                     + re.sub(r"\d", r"*", card_number[6:8])
@@ -19,7 +18,7 @@ def get_mask_card_number(card_number: str) -> str:
                     + re.sub(r"\d", r"*", card_number[8:12])
                     + " "
                     + card_number[-4:]
-            )
+                    )
         masks_logger.error("Неверный ввод данных")
         raise ValueError("Неверный ввод данных")
     masks_logger.warning("Нет данных")

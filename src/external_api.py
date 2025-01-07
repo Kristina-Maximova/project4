@@ -1,5 +1,4 @@
 import os
-
 import requests
 import requests.exceptions
 from dotenv import load_dotenv
@@ -30,17 +29,19 @@ def get_converted_amount(transaction: dict) -> float:
             status_code = response.status_code
             if status_code == 200:
                 data = response.json()  # ответ от сервера
-                return round(data["result"], 2)
+                return round(float(data["result"]), 2)
+            else:
+                return float(0)
 
         except requests.exceptions.RequestException:
             print("Ошибка конвертации")
-            return 0
+            return float(0)
 
     elif code_of_currency == "RUB":
         return round(float(amount), 2)
 
     else:
-        return 0.0
+        return float(0)
 
 
 if __name__ == "__main__":

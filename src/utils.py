@@ -1,6 +1,7 @@
 import json
 import os.path
 from typing import Any
+from src.loggers import utils_logger
 
 # Создаем абсолютный путь к файлу
 path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations.json")
@@ -8,6 +9,7 @@ path_to_file = os.path.join(os.path.dirname(__file__), "..", "data", "operations
 
 def get_transactions(path: str) -> list[Any]:
     """Функция для чтения данных о транзакциях из json-файла"""
+    utils_logger.info(f"Чтение файла {path}")
     try:
         with open(path, encoding="utf-8") as transactions_file:
             try:
@@ -15,15 +17,19 @@ def get_transactions(path: str) -> list[Any]:
 
             except json.JSONDecodeError:
                 print("Ошибка декодирования файла")
+                utils_logger.warning("Декодирование файла завершилось ошибкой")
                 return []
 
     except FileNotFoundError:
         print("Файл не найден")
+        utils_logger.error("Файл не найден")
         return []
 
     if not transactions_data or not isinstance(transactions_data, list):
+        utils_logger.warning("Данные не являются списком или пустые")
         return []
     else:
+        utils_logger.info("Данные из файла получены")
         return transactions_data
 
 

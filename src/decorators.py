@@ -2,16 +2,17 @@ import os
 from datetime import date
 from functools import wraps
 from time import time
+from typing import Any, Callable
 
 # import logging
 
 
-def log(filename: str = "") -> [callable(callable(any))]:
+def log(filename: str = "") -> Callable:
     """ Декоратор для вывода данных о работе функции."""
 
-    def my_decorator(func):
+    def my_decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any | None:
             date_ = date.today()
             start_time = time().__round__(2)
             start_info = f"Function {func.__name__} started {date_} at {start_time}"
@@ -53,7 +54,7 @@ def log(filename: str = "") -> [callable(callable(any))]:
 
 
 @log()
-def division(a, b):
+def division(a: float, b: float) -> float:
     return a / b
 
 

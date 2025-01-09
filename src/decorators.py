@@ -2,8 +2,7 @@ import os
 from datetime import date
 from functools import wraps
 from time import time
-from typing import Callable, Any
-
+from typing import Any, Callable
 
 # import logging
 

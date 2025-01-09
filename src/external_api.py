@@ -1,4 +1,5 @@
 import os
+
 import requests
 import requests.exceptions
 from dotenv import load_dotenv

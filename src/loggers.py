@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 path_to_logfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logs", "my_logs.log")
 # print(path_to_logfile)

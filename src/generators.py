@@ -23,6 +23,8 @@ def filter_by_currency(transactions: list[dict], currency: "str") -> Iterator:
                 return iter([])
         if given_currency != 0:
             return filtered_transactions
+    else:
+        return iter([])
 
 
 def transaction_descriptions(transactions: list[dict]) -> Iterator | str:

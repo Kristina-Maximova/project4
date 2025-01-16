@@ -113,7 +113,8 @@ if __name__ == "__main__":
             "to": "Счет 74489636417521191160"
         }]
 
-    filtered_data = sort_by_description(data, keyword)
+    filtered_data = sort_by_description([{"kz": 1, "fd": 2}, {"kz": 3, "jk": 4}], "организ")
+    print(filtered_data[0:2])
     category = ["Перевод организации", "Перевод со счета на счет", "что-то еще"]
     dict_by_categoies = count_descriptions(data, category)
     print(dict_by_categoies)

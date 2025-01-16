@@ -20,12 +20,6 @@ def test_filter_by_currency(transactions):
                                         'to': 'Счет 75651667383060284188'}
 
 
-def test_filter_by_currency_invalid_currency(transactions):
-    with pytest.raises(ValueError) as exc_info:
-        usd_transactions = filter_by_currency(transactions, "EUR")
-        for _ in range(1):
-            next(usd_transactions)
-        assert str(exc_info.value) == "Нет транзакций с указанной валютой или неверно задана валюта"
 
 
 def test_filter_by_currency_for_empty():

@@ -15,7 +15,7 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
 
 
 def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict] | list:
-    """Сортирует список словарей по дате"""
+    """Сортирует список словарей по дате, по умолчанию по убыванию, если второй аргумент не указан как 'False'"""
     if not list_of_dict:
         return []
     else:

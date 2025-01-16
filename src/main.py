@@ -3,7 +3,8 @@ import os
 from src.utils import get_transactions
 from src.data_entry import get_transactions_from_csv_file, get_transactions_from_excel_file
 from src.processing import filter_by_state, sort_by_date, sort_by_description
-from src.generators import filter_by_currency
+from src.generators import filter_by_currency, get_currency_name
+from src.widget import get_date
 
 path_to_current_file = os.path.dirname(os.path.abspath(__file__))
 path_to_json_file = os.path.join(path_to_current_file, "..", "data", "operations.json")
@@ -106,6 +107,17 @@ def sort_by_choice_by_description(data: list) -> list:
                 print(f"Ошибка при фильтрации по ключевому слову: {e}")
                 return []
 
+def create_report(data: list) -> list:
+    """ Формирование вывода отчета по фильтрации операций"""
+    if data:
+        report = ["","",]
+        for transaction in data:
+            if "date" in transaction:
+                report.append(get_date(transaction["date"]))
+                pass
+
+
+
 
 def main() -> list | str:
     """ Общая логика процесса фильтрации транзакций"""
@@ -119,6 +131,7 @@ def main() -> list | str:
     if sorted_data:
         data_count = len(sorted_data)
         print("Распечатываю итоговый список транзакций...")
+
         print(f"Всего банковских операций в выборке: {data_count}")
         print(sorted_data)
     else:

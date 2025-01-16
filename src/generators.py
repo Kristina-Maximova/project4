@@ -36,8 +36,30 @@ def transaction_descriptions(transactions: list[dict]) -> Iterator | str:
             if "description" in transactions[n]:
                 x = transactions[n].get("description")
                 yield x
-            n += 1
-    return iter([])
+                n += 1
+            else:
+                yield iter("")
+                n += 1
+    return iter("")
+
+
+def get_currency_name(data: list) -> Iterator | str:
+    if data:
+        n = 0
+        while n < len(data):
+            if "currency_name" in data[n]:
+                x = data[n].get("currency_name")
+                yield x
+                n += 1
+            elif "operationAmount" in data[n] and "currency" in data[n]["operationAmount"] and "name" in \
+                    data[n]["operationAmount"]["currency"]:
+                x = data[n]["operationAmount"]["currency"].get("name")
+                yield x
+                n += 1
+            else:
+                yield iter("")
+                n += 1
+    return iter("")
 
 
 def get_card_sample(nums: str) -> str:
@@ -46,7 +68,7 @@ def get_card_sample(nums: str) -> str:
 
 
 def card_number_generator(start: int | str, stop: int | str) -> Iterator:
-    """"""
+    """Функция, генерирующая номера карт в заданном диапазоне значений"""
     if int(stop) >= 10000000000000000 or not isinstance(int(start), int) or not isinstance(int(stop), int) or int(
             start) > int(stop):
         raise ValueError("Неверно введен диапазон номеров")
@@ -96,3 +118,7 @@ if __name__ == "__main__":
 
     # for card_number in card_number_generator(34567234567888, 34567234567890):
     #     print(card_number)
+
+    currency_name_ = get_currency_name(transactions)
+    for _ in range(2):
+        print(next(currency_name_))

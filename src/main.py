@@ -1,10 +1,11 @@
 import os
+from collections import defaultdict
 
-from src.utils import get_transactions
+from src.utils import get_transactions, unpack_dict
 from src.data_entry import get_transactions_from_csv_file, get_transactions_from_excel_file
 from src.processing import filter_by_state, sort_by_date, sort_by_description
-from src.generators import filter_by_currency, get_currency_name
-from src.widget import get_date
+from src.generators import filter_by_currency
+from src.widget import get_date, mask_account_card
 
 path_to_current_file = os.path.dirname(os.path.abspath(__file__))
 path_to_json_file = os.path.join(path_to_current_file, "..", "data", "operations.json")
@@ -107,22 +108,56 @@ def sort_by_choice_by_description(data: list) -> list:
                 print(f"Ошибка при фильтрации по ключевому слову: {e}")
                 return []
 
+
 def create_report(data: list) -> list:
     """ Формирование вывода отчета по фильтрации операций"""
+    # defaultdict?
     if data:
-        report = ["","",]
+        full_report = []
+        # разворачиваем словари в линейные, если есть вложенные словари.
+        # ! Меняются ключи, если json-файл источник транзакций
         for transaction in data:
-            if "date" in transaction:
-                report.append(get_date(transaction["date"]))
-                pass
-
-
+            report = []
+            simple_transaction = unpack_dict(transaction)
+            # for k in simple_transaction:
+            try:
+                report.append(get_date(simple_transaction.get("date")))
+                d = simple_transaction.get("description")
+                report.append(d)
+                x = simple_transaction.get("from")
+                if "открытие" not in d.lower():
+                    report.append(mask_account_card(x) + " -> ")
+                else:
+                    report.append(mask_account_card(x))
+                y = simple_transaction.get("to")
+                report.append(mask_account_card(y))
+                s = simple_transaction.get("amount")
+                report.append(f"Cумма: {s}")
+                v = simple_transaction.get("currency_name")
+                report.append(v)
+                v = simple_transaction.get("name")
+                report.append(v)
+            except KeyError:
+                continue
+            full_report.append(report)
+        return full_report
+    return []
 
 
 def main() -> list | str:
     """ Общая логика процесса фильтрации транзакций"""
     print("Привет!\nДобро пожаловать в программу работы c банковскими транзакциями")
     transactions_data = get_data_by_choice()
+
+    # """ создаем объект с defaultdict на базе полученных данных,
+    # чтобы избежать KeyError при отсутствии каких-то ключей в данных"""
+    # transactions_data = []
+    # for transaction in transactions_data_:
+    #     def_dict = defaultdict(str)
+    #     for key, value in transaction.items():
+    #         def_dict[key] = value
+    # transactions_data.append(def_dict)
+    # - ! теряются значения при такой обработке
 
     sorted_data = sort_by_choice_by_description(
         sort_by_choice_currency(
@@ -131,9 +166,14 @@ def main() -> list | str:
     if sorted_data:
         data_count = len(sorted_data)
         print("Распечатываю итоговый список транзакций...")
-
         print(f"Всего банковских операций в выборке: {data_count}")
-        print(sorted_data)
+        # print(sorted_data)
+        report_ = create_report(sorted_data)
+        for item in report_:
+            print(item[0] + " " + item[1])
+            print(item[2] + item[3])
+            print(item[4] + " " + item[5] + "\n")
+
     else:
         print("Не найдено ни одной транзакции, подходящей под заданные условия фильтрации")
 

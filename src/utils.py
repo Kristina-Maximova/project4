@@ -34,6 +34,35 @@ def get_transactions(path: str) -> list | Any:
         return transactions_data
 
 
+def unpack_dict(dict_: dict, newkey: str = "") -> dict:
+    """Рекурсивная функция, распаковывающая словарь с вложенными словарями в линейный словарь,
+    где ключи - последнее значение ключа перед значением"""
+    new_dict = {}
+    for key, value in dict_.items():
+        newkey = key
+        if isinstance(value, dict):
+            new_dict.update(unpack_dict(value, newkey))
+        else:
+            new_dict[newkey] = value
+    return new_dict
+
+
 if __name__ == "__main__":
     transactions_ = get_transactions(path_to_file)
     print(transactions_)
+
+    # new_transactions_ = []
+    # for transaction in transactions_:
+    #     tr = unpack_dict(transaction)
+    #     new_transactions_.append(tr)
+    #
+    # print(new_transactions_)
+    # [{'id': 441945886,
+    # 'state': 'EXECUTED',
+    # 'date': '2019-08-26T10:50:58.294041',
+    # 'amount': '31957.58',
+    # 'name': 'руб.',
+    # 'code': 'RUB',
+    # 'description': 'Перевод организации',
+    # 'from': 'Maestro 1596837868705199',
+    # 'to': 'Счет 64686473678894779589'},]

@@ -1,5 +1,4 @@
 import os
-from collections import defaultdict
 
 from src.utils import get_transactions, unpack_dict
 from src.data_entry import get_transactions_from_csv_file, get_transactions_from_excel_file
@@ -121,21 +120,21 @@ def create_report(data: list) -> list:
             simple_transaction = unpack_dict(transaction)
             # for k in simple_transaction:
             try:
-                report.append(get_date(simple_transaction.get("date")))
-                d = simple_transaction.get("description")
+                report.append(get_date(simple_transaction.get("date", "")))
+                d = simple_transaction.get("description", "")
                 report.append(d)
-                x = simple_transaction.get("from")
+                x = (simple_transaction.get("from", ""))
                 if "открытие" not in d.lower():
                     report.append(mask_account_card(x) + " -> ")
                 else:
                     report.append(mask_account_card(x))
-                y = simple_transaction.get("to")
+                y = simple_transaction.get("to", "")
                 report.append(mask_account_card(y))
-                s = simple_transaction.get("amount")
+                s = simple_transaction.get("amount", "")
                 report.append(f"Cумма: {s}")
-                v = simple_transaction.get("currency_name")
+                v = simple_transaction.get("currency_name", "")
                 report.append(v)
-                v = simple_transaction.get("name")
+                v = simple_transaction.get("name", "")
                 report.append(v)
             except KeyError:
                 continue
@@ -166,7 +165,7 @@ def main() -> list | str:
     if sorted_data:
         data_count = len(sorted_data)
         print("Распечатываю итоговый список транзакций...")
-        print(f"Всего банковских операций в выборке: {data_count}")
+        print(f"Всего банковских операций в выборке: {data_count}\n")
         # print(sorted_data)
         report_ = create_report(sorted_data)
         for item in report_:

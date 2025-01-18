@@ -59,6 +59,6 @@ def division(a: float, b: float) -> float:
     return a / b
 
 
-if __name__ == "__main__":
-    x = division(6, 0)
-    print(x)
+# if __name__ == "__main__":
+#     x = division(6, 0)
+#     print(x)

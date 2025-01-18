@@ -18,6 +18,16 @@ def test_get_transactions_from_csv_file():
             assert result == expected_result
             csv.DictReader.assert_called_once()
 
+@patch("pandas.read_excel")
+def test_get_transactions_from_excel_file():
+    """ Тест на обработку пустого файла"""
+    mock_empty_content = []
+    mock.read_excel.return_value = pandas.DataFrame(mock_empty_content)
+    result = get_transactions_from_excel_file("test_file.xlsx")
+    assert result == mock_data
+    mock_read_excel.assert_called_once()
+
+
 
 def test_get_transactions_from_csv_file_empty():
     """ Чтение файла при отсутствии файла или неверном пути """

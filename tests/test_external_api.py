@@ -37,3 +37,17 @@ def test_get_converted_amount_from_RUB():
     """Обработка транзакции, если сумма в рублях изначально"""
     assert get_converted_amount(
         {'operationAmount': {'amount': '9824.07', 'currency': {'name': 'руб', 'code': 'RUB'}}}) == 9824.07
+
+
+@patch("requests.get")
+def test_get_converted_amount_wrong(mock_get):
+    """Проверяем, что при ошибочном ответе от сервера функция вернет 0.0 """
+    mock_get.return_value.json.return_value = ConnectionError
+    mock_get.return_value.status_code = 418
+    assert get_converted_amount(
+        {'operationAmount': {'amount': '9824.07', 'currency': {'name': 'USD', 'code': 'USD'}}}) == float(0)
+    mock_get.assert_called()
+
+
+def test_get_converted_amount_invalid_data():
+    assert get_converted_amount({"Fake_content": "test"}) == float(0)

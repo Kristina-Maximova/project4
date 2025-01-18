@@ -1,9 +1,12 @@
 import pytest
 
-from src.generators import card_number_generator, filter_by_currency, get_card_sample, transaction_descriptions
+from src.generators import card_number_generator, filter_by_currency, get_card_sample, transaction_descriptions, \
+    get_currency_name
+from tests.conftest import csv_transactions
 
 
 def test_filter_by_currency(transactions):
+    """ Тест на корректную работу с данными из json-файла"""
     usd_transactions = filter_by_currency(transactions, "USD")
     assert (next(usd_transactions)) == {'date': '2018-06-30T02:08:58.425572',
                                         'description': 'Перевод организации',
@@ -20,6 +23,19 @@ def test_filter_by_currency(transactions):
                                         'to': 'Счет 75651667383060284188'}
 
 
+def test_filter_by_currency_another(csv_transactions):
+    """Тест на корректную работу с данными из csv- и xlsx-файлов"""
+    data = csv_transactions
+    tjs_transactions = filter_by_currency(data, "TJS")
+    assert (next(tjs_transactions)) == {'id': '1245327', 'state': 'PENDING', 'date': '2021-03-09T00:56:48Z',
+                                        'amount': '24252', 'currency_name': 'Somoni', 'currency_code': 'TJS',
+                                        'from': 'Discover 3233958335206913', 'to': 'Visa 6269545625045856',
+                                        'description': 'Перевод с карты на карту'}
+
+
+def test_filter_by_currency_wrong(csv_transactions):
+    with pytest.raises(StopIteration):
+        tr = next(filter_by_currency(csv_transactions, "PfHP"))
 
 
 def test_filter_by_currency_for_empty():
@@ -59,3 +75,14 @@ def test_card_number_generator_invalid_start_stop():
 
 def test_get_card_sample():
     assert get_card_sample("1234567890123456") == "1234 5678 9012 3456"
+
+
+def test_get_currency_name(csv_transactions):
+    """Тест на корректную работу"""
+    a = get_currency_name(csv_transactions)
+    assert (next(a)) == "Somoni"
+
+def test_get_currency_name(transactions):
+    """Тест на корректную работу c другим типом данных"""
+    a = get_currency_name(transactions)
+    assert (next(a)) == "USD"

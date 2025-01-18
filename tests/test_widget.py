@@ -21,9 +21,7 @@ def test_mask_account_card(string_with_number: str, mask: str) -> None:
 
 
 def test_mask_account_card_invalid_input() -> None:
-    with pytest.raises(ValueError) as exc_info:
-        mask_account_card("Строка без чисел или с меньшим/большим числом, например, *7000")
-        assert str(exc_info.value) == "Неверный ввод данных"
+    assert mask_account_card("344 9") == ""
 
 
 def test_get_date(correct_string_with_date: str) -> None:
@@ -35,8 +33,7 @@ def test_get_date_for_empty() -> None:
 
 
 def test_get_date_invalid_input() -> None:
-    with pytest.raises(ValueError) as exc_info:
-        get_date("24-03-11T02:26:18.671407")
-        get_date("2024.03.118.67140724-03-11")
-        get_date("Строка без чисел")
-        assert str(exc_info.value) == "Неверный ввод данных"
+    assert get_date("24-03-11T02:26:18.671407") == ""
+    assert get_date("2024.03.118.67140724-03-11") == ""
+    assert get_date("Строка без чисел") == ""
+

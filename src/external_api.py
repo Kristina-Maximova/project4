@@ -11,8 +11,11 @@ url = "https://api.apilayer.com/exchangerates_data/convert"
 
 def get_converted_amount(transaction: dict) -> float:
     """Функция, возвращающая сумму транзакции в рублях."""
-    amount = transaction["operationAmount"]["amount"]  # строка с суммой транзакции
-    code_of_currency = transaction["operationAmount"]["currency"]["code"]
+    try:
+        amount = transaction["operationAmount"]["amount"]  # строка с суммой транзакции
+        code_of_currency = transaction["operationAmount"]["currency"]["code"]
+    except KeyError:
+        return float(0)
 
     if code_of_currency != "RUB":
         try:
@@ -45,9 +48,9 @@ def get_converted_amount(transaction: dict) -> float:
         return float(0)
 
 
-if __name__ == "__main__":
-    a = get_converted_amount({'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572',
-                              'operationAmount': {'amount': '9824.07', 'currency': {'name': 'USD', 'code': 'USD'}},
-                              'description': 'Перевод организации', 'from': 'Счет 75106830613657916952',
-                              'to': 'Счет 11776614605963066702'})
-    print(a)
+# if __name__ == "__main__":
+#     a = get_converted_amount({'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572',
+#                               'operationAmount': {'amount': '9824.07', 'currency': {'name': 'USD', 'code': 'USD'}},
+#                               'description': 'Перевод организации', 'from': 'Счет 75106830613657916952',
+#                               'to': 'Счет 11776614605963066702'})
+#     print(a)

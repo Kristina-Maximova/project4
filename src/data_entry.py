@@ -32,7 +32,7 @@ def get_transactions_from_excel_file(path_to_file: str) -> list[dict] | list:
         return []
 
 # if __name__ == "__main__":
-#    transact_csv = get_transactions_from_csv_file(path_to_csv_file)
-#    transct_xlsx = get_transactions_from_excel_file(path_to_excel_file)
-#    print(transact_csv[-2:])
-#    print(transct_xlsx[-2:])
+#      transact_csv = get_transactions_from_csv_file(path_to_csv_file)
+#      transct_xlsx = get_transactions_from_excel_file(path_to_excel_file)
+#      print(transact_csv[-5:])
+#      print(transct_xlsx[-2:])

@@ -5,7 +5,7 @@ from src.decorators import division, log
 
 def test_log_decorators(capsys):
     """Тест на перехват вывода в консоль при корректной работе функции"""
-    division(8, 4)
+    division(600, 4.6)
     captured = capsys.readouterr()
 
     assert (re.sub(r"\d", r"*",

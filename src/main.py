@@ -118,7 +118,6 @@ def create_report(data: list) -> list:
         for transaction in data:
             report = []
             simple_transaction = unpack_dict(transaction)
-            # for k in simple_transaction:
             try:
                 report.append(get_date(simple_transaction.get("date", "")))
                 d = simple_transaction.get("description", "")
@@ -147,17 +146,6 @@ def main() -> list | str:
     """ Общая логика процесса фильтрации транзакций"""
     print("Привет!\nДобро пожаловать в программу работы c банковскими транзакциями")
     transactions_data = get_data_by_choice()
-
-    # """ создаем объект с defaultdict на базе полученных данных,
-    # чтобы избежать KeyError при отсутствии каких-то ключей в данных"""
-    # transactions_data = []
-    # for transaction in transactions_data_:
-    #     def_dict = defaultdict(str)
-    #     for key, value in transaction.items():
-    #         def_dict[key] = value
-    # transactions_data.append(def_dict)
-    # - ! теряются значения при такой обработке
-
     sorted_data = sort_by_choice_by_description(
         sort_by_choice_currency(
             sort_by_choice_date(
@@ -168,11 +156,13 @@ def main() -> list | str:
         print(f"Всего банковских операций в выборке: {data_count}\n")
         # print(sorted_data)
         report_ = create_report(sorted_data)
-        for item in report_:
-            print(item[0] + " " + item[1])
-            print(item[2] + item[3])
-            print(item[4] + " " + item[5] + "\n")
-
+        try:
+            for item in report_:
+                print(item[0] + " " + item[1])
+                print(item[2] + item[3])
+                print(item[4] + " " + item[5] + "\n")
+        except Exception:
+            print("")
     else:
         print("Не найдено ни одной транзакции, подходящей под заданные условия фильтрации")
 

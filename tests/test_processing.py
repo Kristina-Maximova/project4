@@ -1,6 +1,7 @@
 import pytest
 
-from src.processing import filter_by_state, sort_by_date
+from src.processing import filter_by_state, sort_by_date, sort_by_description, count_descriptions
+from tests.conftest import transactions, csv_transactions
 
 
 def test_filter_by_state(list_of_dictionaries: list[dict],
@@ -63,3 +64,29 @@ def test_sort_by_date_invalid_date() -> None:
                       {'date': '', 'id': 594226727},
                       {'date': '.33.419441', 'id': 41428829},
                       {'date': '2020.08.31T21:27:25.241689', 'id': 939719570}])
+
+
+def test_sort_by_description(csv_transactions):
+    """
+    Тест на корректную работу и обработку пустого списка
+    """
+    result = sort_by_description(csv_transactions, "открытие")
+    null_result = sort_by_description([], "открытие")
+    assert result == [{'id': '4137938', 'state': 'EXECUTED', 'date': '2023-01-04T13:13:34Z', 'amount': '15560',
+                       'currency_name': 'Real', 'currency_code': 'BRL', 'from': '', 'to': 'Счет 38164279390569873521',
+                       'description': 'Открытие вклада'}]
+    assert null_result == []
+
+
+def test_sort_by_description_1(transactions, capsys):
+    result = sort_by_description("oткрытие", transactions)
+    captured = capsys.readouterr()
+    assert result == []
+    assert (captured.out) == ("Ошибка при фильтрации по ключевому слову в описании: "
+                              "string indices must be integers, not 'str'\n")
+
+
+def test_count_descriptions(csv_transactions):
+    category = ["Перевод организации", "Перевод со счета на счет", "что-то еще"]
+    result = count_descriptions(csv_transactions, category )
+    assert result == {'перевод со счета на счет': 1}

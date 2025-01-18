@@ -39,7 +39,7 @@ def sort_by_description(list_of_dict: list[dict], keyword: str) -> list | list[d
         #         filtered_data.append(transaction)
         try:
             return [transaction for transaction in list_of_dict if
-                    re.search(keyword, transaction["description"], flags=re.IGNORECASE)]
+                    re.search(str(keyword), transaction["description"], flags=re.IGNORECASE)]
         except Exception as e:
             print(f"Ошибка при фильтрации по ключевому слову в описании: {e}")
             return []
@@ -62,8 +62,8 @@ def count_descriptions(list_of_dict: list[dict], categories: list) -> dict:
         print(f"Ошибка при подсчете операций заданных категорий {e}")
         return {}
 
-
 # if __name__ == "__main__":
+#      result = sort_by_description("oткрытие", ["transactions"])
 #     # keyword = input("Введите слово для фильтрации: \n").lower()
 #     keyword = "перевод"
 #     data = [{"id": 939719570,

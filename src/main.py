@@ -1,9 +1,9 @@
 import os
 
-from src.utils import get_transactions, unpack_dict
 from src.data_entry import get_transactions_from_csv_file, get_transactions_from_excel_file
-from src.processing import filter_by_state, sort_by_date, sort_by_description
 from src.generators import filter_by_currency
+from src.processing import filter_by_state, sort_by_date, sort_by_description
+from src.utils import get_transactions, unpack_dict
 from src.widget import get_date, mask_account_card
 
 path_to_current_file = os.path.dirname(os.path.abspath(__file__))

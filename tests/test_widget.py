@@ -36,4 +36,3 @@ def test_get_date_invalid_input() -> None:
     assert get_date("24-03-11T02:26:18.671407") == ""
     assert get_date("2024.03.118.67140724-03-11") == ""
     assert get_date("Строка без чисел") == ""
-

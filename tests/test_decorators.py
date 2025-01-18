@@ -8,11 +8,13 @@ def test_log_decorators(capsys):
     division(600, 4.6)
     captured = capsys.readouterr()
 
-    assert (re.sub(r"\d", r"*",
-                   str(captured.out)) == "Function division started ****-**-** at **********.**\n"
-            + "division ok\n"
-            + "division running time: *.*\n"
-            + "\n")
+    assert (
+        re.sub(r"\d", r"*", str(captured.out))
+        == "Function division started ****-**-** at **********.**\n"
+        + "division ok\n"
+        + "division running time: *.*\n"
+        + "\n"
+    )
 
 
 def test_log_with_errors(capsys):

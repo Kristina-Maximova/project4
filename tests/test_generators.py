@@ -1,31 +1,56 @@
 import pytest
 
-from src.generators import card_number_generator, filter_by_currency, get_card_sample, transaction_descriptions
+from src.generators import (
+    card_number_generator,
+    filter_by_currency,
+    get_card_sample,
+    get_currency_name,
+    transaction_descriptions
+)
 
 
 def test_filter_by_currency(transactions):
+    """Тест на корректную работу с данными из json-файла"""
     usd_transactions = filter_by_currency(transactions, "USD")
-    assert (next(usd_transactions)) == {'date': '2018-06-30T02:08:58.425572',
-                                        'description': 'Перевод организации',
-                                        'from': 'Счет 75106830613657916952',
-                                        'id': 939719570,
-                                        'operationAmount': {'amount': '9824.07',
-                                                            'currency': {'code': 'USD', 'name': 'USD'}},
-                                        'state': 'EXECUTED',
-                                        'to': 'Счет 11776614605963066702'}
-    assert (next(usd_transactions)) == {'id': 142264268, 'state': 'EXECUTED', 'date': '2019-04-04T23:20:05.206878',
-                                        'operationAmount': {'amount': '79114.93',
-                                                            'currency': {'name': 'USD', 'code': 'USD'}},
-                                        'description': 'Перевод со счета на счет', 'from': 'Счет 19708645243227258542',
-                                        'to': 'Счет 75651667383060284188'}
+    assert (next(usd_transactions)) == {
+        "date": "2018-06-30T02:08:58.425572",
+        "description": "Перевод организации",
+        "from": "Счет 75106830613657916952",
+        "id": 939719570,
+        "operationAmount": {"amount": "9824.07", "currency": {"code": "USD", "name": "USD"}},
+        "state": "EXECUTED",
+        "to": "Счет 11776614605963066702",
+    }
+    assert (next(usd_transactions)) == {
+        "id": 142264268,
+        "state": "EXECUTED",
+        "date": "2019-04-04T23:20:05.206878",
+        "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
+        "description": "Перевод со счета на счет",
+        "from": "Счет 19708645243227258542",
+        "to": "Счет 75651667383060284188",
+    }
 
 
-def test_filter_by_currency_invalid_currency(transactions):
-    with pytest.raises(ValueError) as exc_info:
-        usd_transactions = filter_by_currency(transactions, "EUR")
-        for _ in range(1):
-            next(usd_transactions)
-        assert str(exc_info.value) == "Нет транзакций с указанной валютой или неверно задана валюта"
+def test_filter_by_currency_another(csv_transactions):
+    """Тест на корректную работу с данными из csv- и xlsx-файлов"""
+    tjs_transactions = filter_by_currency(csv_transactions, "TJS")
+    assert (next(tjs_transactions)) == {
+        "id": "1245327",
+        "state": "PENDING",
+        "date": "2021-03-09T00:56:48Z",
+        "amount": "24252",
+        "currency_name": "Somoni",
+        "currency_code": "TJS",
+        "from": "Discover 3233958335206913",
+        "to": "Visa 6269545625045856",
+        "description": "Перевод с карты на карту",
+    }
+
+
+def test_filter_by_currency_wrong(csv_transactions):
+    with pytest.raises(StopIteration):
+        next(filter_by_currency(csv_transactions, "PfHP"))
 
 
 def test_filter_by_currency_for_empty():
@@ -46,9 +71,11 @@ def test_transaction_descriptions_for_empty():
 
 @pytest.mark.parametrize(
     "start, stop, expected",
-    [("15", "17", ["0000 0000 0000 0015", "0000 0000 0000 0016"]),
-     (15, 17, ["0000 0000 0000 0015", "0000 0000 0000 0016"]),
-     ("34567234567888", "34567234567890", ["0034 5672 3456 7888", "0034 5672 3456 7889"])]
+    [
+        ("15", "17", ["0000 0000 0000 0015", "0000 0000 0000 0016"]),
+        (15, 17, ["0000 0000 0000 0015", "0000 0000 0000 0016"]),
+        ("34567234567888", "34567234567890", ["0034 5672 3456 7888", "0034 5672 3456 7889"]),
+    ],
 )
 def test_card_number_generator(start, stop, expected):
     new_numbers = list(card_number_generator(start, stop))
@@ -65,3 +92,15 @@ def test_card_number_generator_invalid_start_stop():
 
 def test_get_card_sample():
     assert get_card_sample("1234567890123456") == "1234 5678 9012 3456"
+
+
+def test_get_currency_name(csv_transactions):
+    """Тест на корректную работу"""
+    a = get_currency_name(csv_transactions)
+    assert (next(a)) == "Somoni"
+
+
+def test_get_currency_name_1(transactions):
+    """Тест на корректную работу c другим типом данных"""
+    a = get_currency_name(transactions)
+    assert (next(a)) == "USD"

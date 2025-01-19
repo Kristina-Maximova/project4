@@ -1,7 +1,10 @@
+import re
+from collections import Counter
+
 from src.widget import get_date
 
 
-def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[dict]:
+def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[dict] | list:
     """Функция для фильтрации списка словарей по ключу state,
     значение ключа по-умолчанию 'EXECUTED'"""
     new_list_of_dict = []
@@ -12,8 +15,8 @@ def filter_by_state(list_of_dict: list[dict], state: str = "EXECUTED") -> list[d
     return new_list_of_dict
 
 
-def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict]:
-    """Сортирует список словарей по дате"""
+def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict] | list:
+    """Сортирует список словарей по дате, по умолчанию по убыванию, если второй аргумент не указан как 'False'"""
     if not list_of_dict:
         return []
     else:
@@ -26,25 +29,56 @@ def sort_by_date(list_of_dict: list[dict], reverse: bool = True) -> list[dict]:
         return list_of_date
 
 
+def sort_by_description(list_of_dict: list[dict], keyword: str) -> list | list[dict]:
+    """Cортирует список транзакций по ключевому слову в описании операции"""
+    if not list_of_dict:
+        return []
+    else:
+        # filtered_data = []
+        # for transaction in list_of_dict:
+        #     if re.search(keyword, transaction["description"], flags=re.IGNORECASE):
+        #         filtered_data.append(transaction)
+        try:
+            return [transaction for transaction in list_of_dict if
+                    re.search(str(keyword), transaction["description"], flags=re.IGNORECASE)]
+        except Exception as e:
+            print(f"Ошибка при фильтрации по ключевому слову в описании: {e}")
+            return []
+
+
+def count_descriptions(list_of_dict: list[dict], categories: list) -> dict:
+    """Подсчет операций с определенными в списке категорий описаниями транзакций. """
+    sample_of_categories = []
+    try:
+        for category in categories:
+            for transaction in list_of_dict:
+                if not transaction["description"]:
+                    continue
+                else:
+                    if transaction["description"].lower() == category.lower():
+                        sample_of_categories.append(transaction["description"].lower())
+        result = dict(Counter(sample_of_categories))
+        return result
+    except Exception as e:
+        print(f"Ошибка при подсчете операций заданных категорий {e}")
+        return {}
+
 # if __name__ == "__main__":
-#     print(
-#         filter_by_state(
-#             [
-#                 {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-#                 {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-#                 {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-#                 {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-#             ],
-#             state="CANCELED",
-#         )
-#     )
-#     print(
-#         sort_by_date(
-#             [
-#                 {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-#                 {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-#                 {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-#                 {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-#             ]
-#         )
-#     )
+#      result = sort_by_description("oткрытие", ["transactions"])
+#     # keyword = input("Введите слово для фильтрации: \n").lower()
+#     keyword = "перевод"
+#     data = [{"id": 939719570,
+#              "state": "EXECUTED",
+#              "date": "2018-06-30T02:08:58.425572",
+#              "operationAmount": {
+#                  "amount": "9824.07",
+#                  "currency": {
+#                      "name": "USD",
+#                      "code": "USD"
+#                  },]
+#
+#     filtered_data = sort_by_description([{"kz": 1, "fd": 2}, {"kz": 3, "jk": 4}], "организ")
+#     print(filtered_data[0:1])
+#     category = ["Перевод организации", "Перевод со счета на счет", "что-то еще"]
+#     dict_by_categoies = count_descriptions(data, category)
+#     print(dict_by_categoies)

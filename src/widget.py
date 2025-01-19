@@ -8,9 +8,9 @@ def mask_account_card(card_or_account: str) -> str:
     if card_or_account:
 
         pattern = r"\d{16,20}"
-        match = re.search(pattern, card_or_account)
+        match = re.search(pattern, str(card_or_account))
         if match is None:
-            raise ValueError("Неверный ввод данных")
+            return ""
         else:
             number_start_index = match.start()  # No error!
             card_or_account_number = card_or_account[number_start_index:]
@@ -30,13 +30,14 @@ def get_date(line_with_date: str) -> str:
     if line_with_date:
         date_pattern = r"^\d{4}-\d{2}-\d{2}"
         if re.search(date_pattern, line_with_date) is None:
-            raise ValueError("Неверный ввод данных")
+            return ""
 
         return line_with_date[8:10] + "." + line_with_date[5:7] + "." + line_with_date[:4]
     else:
         return ""
 
-
 # if __name__ == "__main__":
 #     print(mask_account_card("Visa Platinum 8990922113665229"))
 #     print(get_date("2024-03-11T02:26:18.671407"))
+#     print(mask_account_card('Счет 83739717055666813179'))
+#     print(mask_account_card(None))

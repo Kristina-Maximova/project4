@@ -5,14 +5,16 @@ from src.decorators import division, log
 
 def test_log_decorators(capsys):
     """Тест на перехват вывода в консоль при корректной работе функции"""
-    division(8, 4)
+    division(600, 4.6)
     captured = capsys.readouterr()
 
-    assert (re.sub(r"\d", r"*",
-                   str(captured.out)) == "Function division started ****-**-** at **********.**\n"
-            + "division ok\n"
-            + "division running time: *.*\n"
-            + "\n")
+    assert (
+        re.sub(r"\d", r"*", str(captured.out))
+        == "Function division started ****-**-** at **********.**\n"
+        + "division ok\n"
+        + "division running time: *.*\n"
+        + "\n"
+    )
 
 
 def test_log_with_errors(capsys):

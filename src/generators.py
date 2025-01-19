@@ -4,19 +4,27 @@ from typing import Iterator
 def filter_by_currency(transactions: list[dict], currency: "str") -> Iterator:
     """Генераторная функция,  поочередно выдает транзакции,
     где валюта операции соответствует заданной"""
-
     if transactions:
         given_currency = 0
         for transaction in transactions:
-
-            if transaction["operationAmount"]["currency"]["code"] == currency:
-                given_currency += 1
-        if given_currency == 0:
-            raise ValueError("Нет транзакций с указанной валютой или неверно задана валюта")
-        filtered_transactions = filter(lambda x: x["operationAmount"]["currency"]["code"] == currency, transactions)
-        return filtered_transactions
-    else:
-        return iter([])
+            if "operationAmount" in transaction:
+                if transaction["operationAmount"]["currency"]["code"] == str(currency):
+                    filtered_transactions = filter(lambda x: x["operationAmount"]["currency"]["code"] == str(currency),
+                                                   transactions)
+                    given_currency += 1
+            elif "currency_code" in transaction:
+                if transaction["currency_code"] == currency:
+                    filtered_transactions = filter(lambda x: x["currency_code"] == str(currency),
+                                                   transactions)
+                    given_currency += 1
+            else:
+                print("Нет транзакций с указанной валютой или неверно задана валюта")
+                return iter([])
+        if given_currency != 0:
+            return filtered_transactions
+        else:
+            return iter([])
+    return iter([])
 
 
 def transaction_descriptions(transactions: list[dict]) -> Iterator | str:
@@ -28,8 +36,30 @@ def transaction_descriptions(transactions: list[dict]) -> Iterator | str:
             if "description" in transactions[n]:
                 x = transactions[n].get("description")
                 yield x
-            n += 1
-    return iter([])
+                n += 1
+            else:
+                yield iter("")
+                n += 1
+    return iter("")
+
+
+def get_currency_name(data: list) -> Iterator | str:
+    if data:
+        n = 0
+        while n < len(data):
+            if "currency_name" in data[n]:
+                x = data[n].get("currency_name")
+                yield x
+                n += 1
+            elif "operationAmount" in data[n] and "currency" in data[n]["operationAmount"] and "name" in \
+                    data[n]["operationAmount"]["currency"]:
+                x = data[n]["operationAmount"]["currency"].get("name")
+                yield x
+                n += 1
+            else:
+                yield iter("")
+                n += 1
+    return iter("")
 
 
 def get_card_sample(nums: str) -> str:
@@ -38,7 +68,7 @@ def get_card_sample(nums: str) -> str:
 
 
 def card_number_generator(start: int | str, stop: int | str) -> Iterator:
-    """"""
+    """Функция, генерирующая номера карт в заданном диапазоне значений"""
     if int(stop) >= 10000000000000000 or not isinstance(int(start), int) or not isinstance(int(stop), int) or int(
             start) > int(stop):
         raise ValueError("Неверно введен диапазон номеров")
@@ -46,44 +76,6 @@ def card_number_generator(start: int | str, stop: int | str) -> Iterator:
     return x
 
 # if __name__ == "__main__":
-#     transactions =[
-#             {
-#                 "id": 939719570,
-#                 "state": "EXECUTED",
-#                 "date": "2018-06-30T02:08:58.425572",
-#                 "operationAmount": {
-#                     "amount": "9824.07",
-#                     "currency": {
-#                         "name": "USD",
-#                         "code": "USD"
-#                     }
-#                 },
-#                 "description": "Перевод организации",
-#                 "from": "Счет 75106830613657916952",
-#                 "to": "Счет 11776614605963066702"
-#             },
-#             {
-#                 "id": 142264268,
-#                 "state": "EXECUTED",
-#                 "date": "2019-04-04T23:20:05.206878",
-#                 "operationAmount": {
-#                     "amount": "79114.93",
-#                     "currency": {
-#                         "name": "USD",
-#                         "code": "USD"
-#                     }
-#                 },
-#                 "description": "Перевод со счета на счет",
-#                 "from": "Счет 19708645243227258542",
-#                 "to": "Счет 75651667383060284188"
-#             }]
-#     descriptions = transaction_descriptions(transactions)
-#     for _ in range(2):
-#         print(next(descriptions))
 #
-#     usd_transactions = filter_by_currency(transactions, "USD")
-#     for _ in range(2):
-#         print(next(usd_transactions))
-#
-#     for card_number in card_number_generator(34567234567888, 34567234567890):
-#         print(card_number)
+#     a = get_currency_name(tr)
+#     print(next(a))

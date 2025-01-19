@@ -18,7 +18,7 @@ def test_get_transactions_with_success(mock_transactions):
 
 
 def test_get_transactions_with_invalid_path(capsys):
-    """Тест при отсутствии файла для чтения или неверном пути """
+    """Тест при отсутствии файла для чтения или неверном пути"""
     test_transactions1 = get_transactions("wrong_path")
     captured = capsys.readouterr()
     assert test_transactions1 == []

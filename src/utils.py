@@ -34,6 +34,18 @@ def get_transactions(path: str) -> list | Any:
         return transactions_data
 
 
-if __name__ == "__main__":
-    transactions_ = get_transactions(path_to_file)
-    print(transactions_)
+def unpack_dict(dict_: dict, newkey: str = "") -> dict:
+    """Рекурсивная функция, распаковывающая словарь с вложенными словарями в линейный словарь,
+    где ключи - последнее значение ключа перед значением"""
+    new_dict = {}
+    for key, value in dict_.items():
+        newkey = key
+        if isinstance(value, dict):
+            new_dict.update(unpack_dict(value, newkey))
+        else:
+            new_dict[newkey] = value
+    return new_dict
+
+# if __name__ == "__main__":
+#     transactions_ = get_transactions(path_to_file)
+#     print(transactions_)
